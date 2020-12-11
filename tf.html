@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'/>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+        <title class='title'></title>
+        <link rel="stylesheet" href="style.css">
+        <script src='./js/newQ.js'></script>
+        <script>
+
+const readIncidents = function () {
+                // læs m ajax
+                let oReq = new XMLHttpRequest();
+                oReq.addEventListener("load", function () {
+                    incidents = [];
+                    if (this.responseText.length > 0)
+                        incidents = JSON.parse(this.responseText); // get and objectify
+                        for (var i = 0; i < incidents.length; i++) {
+                            var mainContainer = document.getElementById("myData");
+                            var div = document.createElement("div");
+                            div.innerHTML = '<br>' + '<b>incident:</b> ' + '<br>' + '<br>' +
+                                            '<b>Name:</b> ' + incidents[i].name + '<br>' +
+                                            '<b>mobil: </b>' + incidents[i].mobil + '<br>'+
+                                            '<b>besked:</b> ' + incidents[i].besked + '<br>' +
+                                            '<b>Fagperson:</b> ' + incidents[i].need + '<br>' +
+                                            '<button id="slet"'+ i + ' onclick="clickFunc('+i+')">' +
+                                            'Marker som løst</button>';
+                            mainContainer.appendChild(div);
+                        }  
+
+                });
+                oReq.open("GET", "./getIncidents.php");
+                oReq.send();
+            };
+            function clickFunc(i) {
+                        incidents.splice(i, 1);
+                        console.log(incidents);
+                            };
+
+                        // her skal du skrive incidents tilbage til serveren
+                        // https://stackoverflow.com/questions/32546100/how-to-write-data-to-a-json-file-using-javascript
+            
+            const doThis = function () {
+                headAndShoulders('Receive');
+                feet(2020);
+                readIncidents();
+            };
+
+            let incidents;
+            window.addEventListener('load', doThis);
+
+        </script>
+    </head>
+    <body>
+        <header><h1 class='title'></h1></header>    <!-- autofilled -->
+        <main>
+            <section id='incidents'></section>
+            <div id="myData">
+            </div>
+            <p><a href='./index.html'>incidents</a></p>
+        </main>
+        <footer></footer>                           <!-- autofilled -->
+    </body>
+</html>
